@@ -15,7 +15,7 @@ export const getFile=async (req,res)=>{
     res.send("correcto!");
 }
 export const getFiles=async (req,res)=>{
-    
+    res.send("correcto!");
 }
 export const createFile=async (req,res)=>{
     /*
