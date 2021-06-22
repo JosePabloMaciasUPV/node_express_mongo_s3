@@ -1,6 +1,6 @@
 import {Schema, model} from 'mongoose';
 
-const productSchema= new Schema({
+const fileSchema= new Schema({
 	name: String,
 	description:String,
 	owner:String,
@@ -10,3 +10,4 @@ const productSchema= new Schema({
 	timestamps:true,
 	versionKey:false
 })
+ export default model('File',fileSchema);
