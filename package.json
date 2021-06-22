@@ -12,6 +12,9 @@
   "author": "developer",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "aws-sdk": "^2.931.0",
+    "express": "^4.17.1",
+    "multer": "^1.4.2",
+    "uuid": "^3.3.2"
   }
 }
