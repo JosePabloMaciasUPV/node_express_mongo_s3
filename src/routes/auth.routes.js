@@ -5,3 +5,6 @@ const router=Router();
 //The second parameter specifies middleware function to be called
 router.post('/login' , authController.login);
 router.post('/register',authController.register);
+
+
+export default router;
