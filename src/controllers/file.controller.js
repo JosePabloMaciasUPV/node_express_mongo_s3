@@ -1,4 +1,4 @@
-import File from '../models/product';
+import File from '../models/File';
 import { uploadFile, getFileStream } from '../middleware/s3';
 const fs = require('fs')
 const util = require('util')
