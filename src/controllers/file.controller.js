@@ -3,7 +3,9 @@ import { uploadFile, getFileStream } from '../middleware/s3';
 const fs = require('fs')
 const util = require('util')
 const unlinkFile = util.promisify(fs.unlink)
-
+//Handle multer file uploader middleware
+const multer = require('multer');
+const upload = multer({ dest: 'fileTemp/' });
 
 
 export const getFile=async (req,res)=>{
@@ -18,13 +20,12 @@ export const getFiles=async (req,res)=>{
     res.send("correcto!");
 }
 export const createFile=async (req,res)=>{
-    
-    upload.single('image')
+    upload.single('file')
     const file = req.file
-    const result = await uploadFile(file)
+    const result = await uploadFile(file).then(successfull=>{console.log(successfull)})
     await unlinkFile(file.path)  
     const description = req.body.description
-    res.send({imagePath: `/images/${result.Key}`}) ;
+    res.send({imagePath: `/file/${result.Key}`}) ;
     
 }
 export const updateFile=async(req,res)=>{
