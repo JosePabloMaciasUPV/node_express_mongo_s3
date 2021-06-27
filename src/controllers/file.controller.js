@@ -5,25 +5,22 @@ const util = require('util')
 const unlinkFile = util.promisify(fs.unlink)
 
 
-//Handle multer file uploader middleware
-const multer = require('multer');
-const upload = multer({ dest: 'fileTemp/' });
 
-export const getFile=async (req,res)=>{
-    /*
+
+export const getFile=async (req,res)=>{s
     //s3 service
     const key = req.params.key
     const readStream = getFileStream(key)
-    readStream.pipe(res)*/
+    readStream.pipe(res)
     res.send("correcto!");
 }
 export const getFiles=async (req,res)=>{
     res.send("correcto!");
 }
 export const createFile=async (req,res)=>{
-    upload.single('file')
     const file = req.file
     console.log(req.body)
+    console.log(req.file)
 	//const result = await uploadFile(file)
     //await unlinkFile(file.path)  
     //const description = req.body.description

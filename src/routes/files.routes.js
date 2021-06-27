@@ -1,11 +1,12 @@
 import {Router} from 'express';
 import * as fileController from '../controllers/file.controller';
 const router=Router();
-
-
+//Handle multer file uploader middleware
+const multer = require('multer');
+var upload = multer({ dest: 'uploads/' })
 
 //The second parameter specifies middleware function to be called
-router.post('/files', fileController.createFile);
+router.post('/files', upload.single('file'),fileController.createFile);
 router.get('/files',fileController.getFiles);
 router.get('/file',fileController.getFile);
 router.get('/fileUpdate',fileController.updateFile);
