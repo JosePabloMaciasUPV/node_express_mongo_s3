@@ -5,7 +5,7 @@ const router=Router();
 
 
 //The second parameter specifies middleware function to be called
-router.post('/files',  fileController.createFile);
+router.post('/files', fileController.createFile);
 router.get('/files',fileController.getFiles);
 router.get('/file',fileController.getFile);
 router.get('/fileUpdate',fileController.updateFile);

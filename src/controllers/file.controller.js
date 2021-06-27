@@ -4,6 +4,7 @@ const fs = require('fs')
 const util = require('util')
 const unlinkFile = util.promisify(fs.unlink)
 
+
 //Handle multer file uploader middleware
 const multer = require('multer');
 const upload = multer({ dest: 'fileTemp/' });
@@ -20,8 +21,7 @@ export const getFiles=async (req,res)=>{
     res.send("correcto!");
 }
 export const createFile=async (req,res)=>{
-    
-    upload.single('image')
+    upload.single('file')
     const file = req.file
     console.log(req.body)
 	//const result = await uploadFile(file)
