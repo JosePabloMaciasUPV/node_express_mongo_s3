@@ -19,12 +19,10 @@ export const getFiles=async (req,res)=>{
 }
 export const createFile=async (req,res)=>{
     const file = req.file
-    console.log(req.body)
-    console.log(req.file)
-	//const result = await uploadFile(file)
-    //await unlinkFile(file.path)  
-    //const description = req.body.description
-    //res.send({imagePath: `/images/${result.Key}`}) ;
+	const result = await uploadFile(file)
+    await unlinkFile(file.path)  
+    const description = req.body.description
+    res.send({imagePath: result.Key});
     
 }
 export const updateFile=async(req,res)=>{

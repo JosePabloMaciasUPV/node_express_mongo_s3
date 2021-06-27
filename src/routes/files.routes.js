@@ -3,8 +3,8 @@ import * as fileController from '../controllers/file.controller';
 const router=Router();
 //Handle multer file uploader middleware
 const multer = require('multer');
-var upload = multer({ dest: 'uploads/' })
-
+var upload = multer({ dest: 'uploads/', 
+limits: { fileSize: 200000000,fieldNameSize:200 } })
 //The second parameter specifies middleware function to be called
 router.post('/files', upload.single('file'),fileController.createFile);
 router.get('/files',fileController.getFiles);
