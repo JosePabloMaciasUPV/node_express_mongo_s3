@@ -20,25 +20,21 @@ export const getFiles=async (req,res)=>{
 }
 export const createFile=async (req,res)=>{
     const file = req.file
-	const result = await uploadFile(file)
+	  const result = await uploadFile(file)
     await unlinkFile(file.path)  
     const description = req.body.description
-
-
     //Mongodb insert
-    const { name, category, price, imgURL } = req.body;
-
+    const {name,description,owner,canRead} = req.body;
+    console.log(req.body)
   try {
-    const newProduct = new Product({
+    const newFile= new File({
       name,
-      category,
-      price,
-      imgURL,
+      description,
+      owner,
+      canRead,
     });
-
-    const productSaved = await newProduct.save();
-
-    res.status(201).json(productSaved);
+    const fileSaved = await newFile.save();
+    res.status(201).json(fileSaved);
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
@@ -46,19 +42,19 @@ export const createFile=async (req,res)=>{
     
 }
 export const updateFile=async(req,res)=>{
-    const updatedProduct = await Product.findByIdAndUpdate(
+    const updatedFile = await File.findByIdAndUpdate(
         req.params.productId,
         req.body,
         {
           new: true,
         }
       );
-      res.status(204).json(updatedProduct);
+      res.status(204).json(updatedFile);
 }
 export const deleteFile=async(req,res)=>{
-    const { productId } = req.params;
+    const { fileId } = req.params;
 
-    await Product.findByIdAndDelete(productId);
+    await File.findByIdAndDelete(fileId);
   
     // code 200 is ok too
     res.status(204).json();
