@@ -4,7 +4,9 @@ import User from "../models/User";
 export const register=async (req,res)=>{
     try {
         // Getting the Request Body
-        const { username, email, password, roles } = req.body;
+
+        const { username, email, password } = req.body;
+	
         // Creating a new User Object
         const newUser = new User({
           username,
