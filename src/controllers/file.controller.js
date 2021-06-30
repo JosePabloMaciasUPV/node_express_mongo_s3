@@ -15,8 +15,8 @@ export const getFile=async (req,res)=>{s
     res.send("correcto!");
 }
 export const getFiles=async (req,res)=>{
-    const products = await Product.find();
-    return res.json(products);
+    const file = await File.find();
+    return res.json(file);
 }
 export const createFile=async (req,res)=>{
     const file = req.file
