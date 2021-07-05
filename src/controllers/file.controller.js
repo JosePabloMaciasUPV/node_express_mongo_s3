@@ -15,6 +15,7 @@ export const getFile=async (req,res)=>{s
     res.send("correcto!");
 }
 export const getFiles=async (req,res)=>{
+	console.log(req.headers.authorization)
     const file = await File.find();
     return res.json(file);
 }
@@ -22,7 +23,6 @@ export const createFile=async (req,res)=>{
     const file = req.file
 	  const result = await uploadFile(file)
     await unlinkFile(file.path)  
-    const description = req.body.description
     //Mongodb insert
     const {name,description,owner,canRead} = req.body;
     console.log(req.body)

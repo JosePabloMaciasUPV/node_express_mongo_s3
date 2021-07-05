@@ -8,7 +8,7 @@ limits: { fileSize: 2000000000,fieldNameSize:200 } })
 //The second parameter specifies middleware function to be called
 router.post('/files', upload.single('file'),fileController.createFile);
 router.get('/files',fileController.getFiles);
-router.get('/file',fileController.getFile);
+router.post('/file',fileController.getFile);
 router.get('/fileUpdate',fileController.updateFile);
 router.delete('/fileDelete',fileController.deleteFile);
 
