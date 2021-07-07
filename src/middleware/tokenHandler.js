@@ -1,13 +1,16 @@
 import Sesion from '../models/Sesion';
 export const verifyToken=async (email,token)=>{
-    const userFound = await Sesion.findOne({ email: email })
-    const tokens=userFound.tokens;
-    const tokenFound=tokens.find(item=>{item===token});
-    if (!tokenFound){ 
+	
+    const userFound = await Sesion.findOne({  email: email })	
+    
+	const tokens=userFound.tokens;
+    const indexOfToken=tokens.indexOf(token);
+    if (indexOfToken===-1){ 
           //return res.status(400).json({ message: "Token does not exist" });
         throw "Token does not exist";
     }else{
-        return "correct token";
+	    console.log(tokens[indexOfToken]);
+	return tokens[indexOfToken];
     }
 }
 
@@ -19,13 +22,24 @@ export const removeToken=async (email,token)=>{
 }
 
 export const addToken=async (email,token)=>{
-    const userFound = await Sesion.findOne({ email: email })
-    const tokens=userFound.tokens;
-    tokens.push(token);
-    Sesion.updateOne({ _id: userFound._id, tokens: tokens });
+	const userFound = await Sesion.findOne({ email: email })
+	    if(!userFound){
+	    
+	const sesion=new Sesion({email:email,tokens:[token]});	    
+	await sesion.save(); 
+    	
+	 return;
+    }
+
+const tokens=userFound.tokens;
+	console.log(userFound);
+	console.log(tokens);
+	tokens.push(token);
+    await Sesion.updateOne({ _id: userFound._id, tokens: tokens });
 }
 
 export const removeAllTokens=async (email)=>{
+	
     const userFound = await Sesion.findOne({ email: email });
-    Sesion.updateOne({ _id: userFound._id, tokens: [] });
+    sesion.updateOne({ _id: userFound._id, tokens: [] });
 }

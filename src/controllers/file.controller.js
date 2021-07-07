@@ -1,7 +1,6 @@
 import File from '../models/File';
 import { uploadFile, getFileStream } from '../middleware/s3';
 import {verifyToken} from '../middleware/tokenHandler';
-import FileOwner from '../models/FileOwner';
 const fs = require('fs')
 const util = require('util')
 const unlinkFile = util.promisify(fs.unlink)
@@ -30,8 +29,8 @@ export const getFiles=async (req,res)=>{
   const email=req.body.email;
   await verifyToken(email,authorization);
   const file = await File.find({emailAuthorization:email});
-  console.log(results)
-  return res.json(file);
+  
+	 res.status(200).json(file)
   }catch(error){
     console.log(error);
     return res.status(400).json({message:error})
