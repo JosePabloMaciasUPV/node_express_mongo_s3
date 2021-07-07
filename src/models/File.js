@@ -3,9 +3,10 @@ import {Schema, model} from 'mongoose';
 const fileSchema= new Schema({
 	name: String,
 	description:String,
-	owner:String,
-	canRead:[String]
-
+	createdBy:String,
+	resourceAwsPath:String,
+	typeOwnership:String,
+	emailAuthorization:String
 },{
 	timestamps:true,
 	versionKey:false
