@@ -76,3 +76,14 @@ export const logout=async (req,res)=>{
     console.log(error);
   }
 };
+export const handshake=async (req,res)=>{
+	try{
+	const token=req.headers.authorization;
+	const email=req.body.email;
+	await verifyToken(email,token);
+		res.status(200).json({message:"Correct"});
+	}catch(error){
+		res.send(error);
+	}
+
+}

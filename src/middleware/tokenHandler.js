@@ -1,8 +1,6 @@
 import Sesion from '../models/Sesion';
 export const verifyToken=async (email,token)=>{
-	
-    const userFound = await Sesion.findOne({  email: email })	
-    
+    const userFound = await Sesion.findOne({  email: email })	   
 	const tokens=userFound.tokens;
     const indexOfToken=tokens.indexOf(token);
     if (indexOfToken===-1){ 
@@ -16,9 +14,12 @@ export const verifyToken=async (email,token)=>{
 
 export const removeToken=async (email,token)=>{
     const userFound = await Sesion.findOne({ email: email })
-    const tokens=userFound.tokens;
-    tokens=tokens.filter(item => item!== token);
+    const tokens=userFound.tokens.filter(item => item!== token);
+	console.log(userFound);
+	console.log(tokens);
+   
     Sesion.updateOne({ _id: userFound._id, tokens: tokens });
+
 }
 
 export const addToken=async (email,token)=>{
