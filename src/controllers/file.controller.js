@@ -12,6 +12,10 @@ export const getFile=async (req,res)=>{
   try{
     const authorization =req.headers.authorization;
     const email=req.body.email;
+	  if( !email || !authorization){
+                return res.status(400).json({message:"Invalid input"});
+        }
+
     await verifyToken(email,authorization);  
     //s3 service
     const key = req.params.key
@@ -27,6 +31,10 @@ export const getFiles=async (req,res)=>{
   try{
   const authorization =req.headers.authorization;
   const email=req.body.email;
+       if( !email || !authorization){
+                return res.status(400).json({message:"Invalid input"});
+        }
+	  
   await verifyToken(email,authorization);
   const file = await File.find({emailAuthorization:email});
   
@@ -40,6 +48,10 @@ export const createFile=async (req,res)=>{
   try {
     const authorization =req.headers.authorization;
     const email=req.body.email;
+	       if( !email || !authorization){
+                return res.status(400).json({message:"Invalid input"});
+        }
+  
     await verifyToken(email,authorization);
     const file = req.file
 	  const result = await uploadFile(file)

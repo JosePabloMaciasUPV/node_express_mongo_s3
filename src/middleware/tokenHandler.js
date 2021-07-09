@@ -15,7 +15,7 @@ export const verifyToken=async (email,token)=>{
 export const removeToken=async (email,token)=>{
     const userFound = await Sesion.findOne({ email: email })
     const tokens=userFound.tokens.filter(item => item!== token);
-	console.log(userFound);
+	console.log(token)
 	console.log(tokens);
    
     Sesion.updateOne({ _id: userFound._id, tokens: tokens });
