@@ -13,9 +13,8 @@ export const getFile=async (req,res)=>{
     const authorization =req.headers.authorization;
     const email=req.body.email;
 	  if( !email || !authorization){
-                return res.status(400).json({message:"Invalid input"});
-        }
-
+      return res.status(400).json({message:"Invalid input"});
+    }
     await verifyToken(email,authorization);  
     //s3 service
     const key = req.params.key
@@ -25,48 +24,46 @@ export const getFile=async (req,res)=>{
     }catch(error){
       console.log(error);
       return res.status(400).json({message:error})
-  }
+    }
 }
 export const getFiles=async (req,res)=>{
   try{
-  const authorization =req.headers.authorization;
-  const email=req.body.email;
-       if( !email || !authorization){
-                return res.status(400).json({message:"Invalid input"});
-        }
-	  
-  await verifyToken(email,authorization);
-  const file = await File.find({emailAuthorization:email});
-  
-	 res.status(200).json(file)
-  }catch(error){
-    console.log(error);
-    return res.status(400).json({message:error})
-  }
+    const authorization =req.headers.authorization;
+    const email=req.body.email;
+    if( !email || !authorization){
+      return res.status(400).json({message:"Invalid input"});
+    }
+    await verifyToken(email,authorization);
+    const file = await File.find({emailAuthorization:email});
+    res.status(200).json(file)
+    }catch(error){
+      console.log(error);
+      return res.status(400).json({message:error})
+    }
 }
+
 export const createFile=async (req,res)=>{
   try {
     const authorization =req.headers.authorization;
     const email=req.body.email;
-	       if( !email || !authorization){
-                return res.status(400).json({message:"Invalid input"});
-        }
-  
+	  if( !email || !authorization){
+      return res.status(400).json({message:"Invalid input"});
+    }
     await verifyToken(email,authorization);
     const file = req.file
 	  const result = await uploadFile(file)
     await unlinkFile(file.path)  
     //Mongodb insert
-    const {name,description,owner,canRead} = req.body;
+    const {name,description,sharedUsers} = req.body;
     console.log(req.body);
-    const arrayOfAuthorzation=canRead.map(item=>{
+    const arrayOfAuthorzation=sharedUsers.map(item=>{
       if(item===email){
         return {
           name:name,
           description:description,
           resourceAwsPath:result,
           createdBy:email,
-          emailAuthorization:owner,
+          emailAuthorization:email,
           typeOwnership:"Admin"
         }
       }else{
@@ -81,8 +78,7 @@ export const createFile=async (req,res)=>{
       }
       
     });
-    const newFile=new File();
-    const fileSaved = await newFile.insertMany(arrayOfAuthorzation);
+    const fileSaved = await File.insertMany(arrayOfAuthorzation);
     res.status(201).json(fileSaved);
   } catch (error) {
     console.log(error);
@@ -102,8 +98,7 @@ export const updateFile=async(req,res)=>{
           new: true,
         }
       );*/
-      res.status(204).json(//updatedFile);
-      {});
+      res.status(204).json({message:"Updated file"});
       }catch (error) {
         console.log(error);
         return res.status(500).json(error);
@@ -114,12 +109,12 @@ export const deleteFile=async(req,res)=>{
     const authorization =req.headers.authorization;
     const email=req.body.email;
     await verifyToken(email,authorization);
-    const { fileId } = req.params;
+    //const { fileId } = req.params;
 
-    await File.findByIdAndDelete(fileId);
+    //await File.findByIdAndDelete(fileId);
   
     // code 200 is ok too
-    res.status(204).json();
+    res.status(204).json({message:"Deleted file"});
   }catch (error) {
     console.log(error);
     return res.status(500).json(error);
