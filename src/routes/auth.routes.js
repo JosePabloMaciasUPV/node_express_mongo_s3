@@ -7,4 +7,5 @@ router.post('/login' , authController.login);
 router.post('/register',authController.register);
 router.post('/handshake',authController.handshake);
 router.post('/logout',authController.logout);
+router.post('/removeSesion',authController.removeSesions);
 export default router;
