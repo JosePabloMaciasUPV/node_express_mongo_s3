@@ -5,6 +5,7 @@ const fileSchema= new Schema({
 	description:String,
 	createdBy:String,
 	resourceAwsPath:String,
+	fileName:String,
 	typeOwnership:String,
 	emailAuthorization:String
 },{

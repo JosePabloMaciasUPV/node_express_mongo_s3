@@ -19,7 +19,7 @@ export const removeToken=async (email,token)=>{
     const tokens=userFound.tokens.filter(item => item!== token);
 	console.log(token)
 	console.log(tokens);
-    Sesion.updateOne({ _id: userFound._id, tokens: tokens });
+    Sesion.updateOne({ _id: userFound._id},{$set: {'tokens': tokens }});
 }
 
 export const addToken=async (email,token)=>{
@@ -33,10 +33,11 @@ export const addToken=async (email,token)=>{
 	console.log(userFound);
 	console.log(tokens);
 	tokens.push(token);
-    await Sesion.updateOne({ _id: userFound._id, tokens: tokens });
+    await Sesion.updateOne({ _id: userFound._id},{$set: {'tokens': tokens }});
 }
 
 export const removeAllTokens=async (email)=>{
     const userFound = await Sesion.findOne({ email: email });
-    sesion.updateOne({ _id: userFound._id, tokens: [] });
+    sesion.updateOne({ _id: userFound._id},{$set: {'tokens': [] }});
+;
 }

@@ -20,7 +20,7 @@ export const getFile=async (req,res)=>{
     //s3 service
     const key = req.body.key
     const readStream = await getFileStream(key)
-    res.setHeader('Content-Disposition', 'attachment;');
+    res.setHeader('Content-Disposition', 'attachment;file.txt');
     readStream.on('error', function(err){
 				res.status(500).json({error:"Error -> " + err});
 		}).pipe(res);
@@ -58,7 +58,7 @@ export const createFile=async (req,res)=>{
 	  const result = await uploadFile(file)
     await unlinkFile(file.path)  
     //Mongodb insert
-    const {name,description} = req.body;
+    const {name,description,fileName} = req.body;
     console.log(req.body);
     const sharedUsers=JSON.parse(req.body.sharedUsers);
     const arrayOfAuthorzation=sharedUsers.map(item=>{
@@ -68,6 +68,7 @@ export const createFile=async (req,res)=>{
           description:description,
           resourceAwsPath:result.Key,
           createdBy:email,
+	  fileName:fileName,
           emailAuthorization:email,
           typeOwnership:"Admin"
         }
@@ -77,6 +78,7 @@ export const createFile=async (req,res)=>{
           description:description,
           resourceAwsPath:result.Key,
           createdBy:email,
+          fileName:fileName,
           emailAuthorization:item,
           typeOwnership:"Read"
         }
