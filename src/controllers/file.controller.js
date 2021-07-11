@@ -16,11 +16,15 @@ export const getFile=async (req,res)=>{
       return res.status(400).json({message:"Invalid input"});
     }
     await verifyToken(email,authorization);  
+    console.log(req.body)	  
     //s3 service
-    const key = req.params.key
-    const readStream = getFileStream(key)
-    readStream.pipe(res)
-    res.send("correcto!");
+    const key = req.body.key
+    const readStream = await getFileStream(key)
+    res.setHeader('Content-Disposition', 'attachment;');
+    readStream.on('error', function(err){
+				res.status(500).json({error:"Error -> " + err});
+		}).pipe(res);
+    //res.send("correcto!");
     }catch(error){
       console.log(error);
       return res.status(400).json({message:error})
@@ -54,14 +58,15 @@ export const createFile=async (req,res)=>{
 	  const result = await uploadFile(file)
     await unlinkFile(file.path)  
     //Mongodb insert
-    const {name,description,sharedUsers} = req.body;
+    const {name,description} = req.body;
     console.log(req.body);
+    const sharedUsers=JSON.parse(req.body.sharedUsers);
     const arrayOfAuthorzation=sharedUsers.map(item=>{
       if(item===email){
         return {
           name:name,
           description:description,
-          resourceAwsPath:result,
+          resourceAwsPath:result.Key,
           createdBy:email,
           emailAuthorization:email,
           typeOwnership:"Admin"
@@ -70,7 +75,7 @@ export const createFile=async (req,res)=>{
         return {
           name:name,
           description:description,
-          resourceAwsPath:result,
+          resourceAwsPath:result.Key,
           createdBy:email,
           emailAuthorization:item,
           typeOwnership:"Read"
